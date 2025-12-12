@@ -6,7 +6,7 @@ import { useAppStore } from '@/lib/store';
 
 export default function Dashboard() {
   const { soStage, poStage, resetAll } = useAppStore();
-  
+
   const getSOStatus = () => {
     switch (soStage) {
       case 'enter-esp': return { label: 'Pending E-SP Entry', color: 'text-muted-foreground' };
@@ -14,7 +14,7 @@ export default function Dashboard() {
       case 'completed': return { label: 'Completed', color: 'text-chart-3' };
     }
   };
-  
+
   const getPOStatus = () => {
     switch (poStage) {
       case 'enter-epp': return { label: 'Pending E-PP Entry', color: 'text-muted-foreground' };
@@ -24,10 +24,10 @@ export default function Dashboard() {
       case 'completed': return { label: 'Completed', color: 'text-chart-3' };
     }
   };
-  
+
   const soStatus = getSOStatus();
   const poStatus = getPOStatus();
-  
+
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-5xl mx-auto">
@@ -47,8 +47,8 @@ export default function Dashboard() {
             </Button>
           </div>
         </header>
-        
-        <div className="grid md:grid-cols-2 gap-6">
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Link to="/sale-order" className="group">
             <Card className="h-full transition-all hover:shadow-lg hover:border-primary/50 cursor-pointer">
               <CardHeader className="pb-4">
@@ -73,7 +73,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </Link>
-          
+
           <Link to="/purchase-order" className="group">
             <Card className="h-full transition-all hover:shadow-lg hover:border-primary/50 cursor-pointer">
               <CardHeader className="pb-4">
@@ -98,8 +98,37 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </Link>
+
+          <Link to="/purchase-order-new" className="group">
+            <Card className="h-full transition-all hover:shadow-lg hover:border-primary/50 cursor-pointer border-2 border-amber-500/30">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="p-3 bg-amber-500/10">
+                    <Package className="h-6 w-6 text-amber-600" />
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                </div>
+                <CardTitle className="text-xl mt-4 flex items-center gap-2">
+                  Purchase Order (Enhanced)
+                  <span className="text-xs bg-amber-500 text-white px-2 py-0.5 rounded-full">NEW</span>
+                </CardTitle>
+                <CardDescription>
+                  Advanced PO with SKU-level validation, fallback pricing, and bucket-based A-PP calculation
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="text-sm text-muted-foreground">
+                    ✓ SKU-level unsold quantity detection<br />
+                    ✓ Fallback pricing for unresolved SKUs<br />
+                    ✓ Transparent bucket-based calculations
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
-        
+
         <div className="mt-10 p-6 bg-card border border-border">
           <h2 className="text-lg font-semibold mb-4">Workflow Overview</h2>
           <div className="flex flex-col md:flex-row gap-4 text-sm">

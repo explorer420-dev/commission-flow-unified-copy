@@ -1,6 +1,7 @@
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { StepBanner } from '@/components/StepBanner';
 import { PriceInput } from '@/components/PriceInput';
+import { QuantityInput } from '@/components/QuantityInput';
 import { StatusBadge } from '@/components/StatusBadge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,8 +13,8 @@ import { toast } from 'sonner';
 
 export default function SaleOrder() {
   const navigate = useNavigate();
-  const { skuItems, soStage, updateESP, updateASP, submitESP, submitASP } = useAppStore();
-  
+  const { skuItems, soStage, updateQuantity, updateESP, updateASP, submitESP, submitASP } = useAppStore();
+
   const handleSubmitESP = () => {
     const allFilled = skuItems.every(item => item.expectedSellingPrice !== null && item.expectedSellingPrice > 0);
     if (!allFilled) {
@@ -23,17 +24,17 @@ export default function SaleOrder() {
     submitESP();
     toast.success('Expected Selling Prices submitted successfully');
   };
-  
-  const handleSubmitASP = () => {
+
+  const handleSubmitASP = async () => {
     const allFilled = skuItems.every(item => item.actualSellingPrice !== null && item.actualSellingPrice > 0);
     if (!allFilled) {
       toast.error('Please fill all Actual Selling Prices before submitting');
       return;
     }
-    submitASP();
+    await submitASP();
     toast.success('Sale Order completed! PO module can now generate Tentative Patty Prices');
   };
-  
+
   const getBanner = () => {
     switch (soStage) {
       case 'enter-esp':
@@ -44,19 +45,19 @@ export default function SaleOrder() {
         return <StepBanner title="Sale Order Completed Successfully" variant="success" />;
     }
   };
-  
+
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-6xl mx-auto">
         <Breadcrumbs items={[{ label: 'SO Module' }]} />
-        
+
         <header className="mb-6">
           <h1 className="text-2xl font-bold text-foreground">Sale Order Module</h1>
           <p className="text-muted-foreground">Manage Expected and Actual Selling Prices</p>
         </header>
-        
+
         {getBanner()}
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>SKU Pricing Table</CardTitle>
@@ -85,7 +86,13 @@ export default function SaleOrder() {
                 {skuItems.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.skuName}</TableCell>
-                    <TableCell className="text-right font-mono">{item.quantity}</TableCell>
+                    <TableCell className="text-right">
+                      <QuantityInput
+                        value={item.quantity}
+                        onChange={(value) => updateQuantity(item.id, value)}
+                        disabled={soStage === 'completed'}
+                      />
+                    </TableCell>
                     <TableCell className="text-right">
                       <PriceInput
                         value={item.expectedSellingPrice}
@@ -104,7 +111,7 @@ export default function SaleOrder() {
                 ))}
               </TableBody>
             </Table>
-            
+
             <div className="mt-6 flex justify-end gap-4">
               {soStage === 'enter-esp' && (
                 <Button onClick={handleSubmitESP} className="gap-2">

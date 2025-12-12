@@ -24,7 +24,7 @@ export function PriceInput({ value, onChange, disabled, className }: PriceInputP
           "pl-7 text-right font-mono",
           disabled && "bg-muted/30 text-muted cursor-not-allowed border-muted"
         )}
-        placeholder="0.00"
+        placeholder="0"
       />
     </div>
   );
