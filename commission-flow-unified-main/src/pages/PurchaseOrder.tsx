@@ -151,7 +151,7 @@ export default function PurchaseOrder() {
                             : "bg-primary/5"
                         )}>
                           {item.tentativePattyPrice !== null 
-                            ? `₹${item.tentativePattyPrice.toFixed(2)}` 
+                            ? `₹${item.tentativePattyPrice === 0 ? '0' : item.tentativePattyPrice.toFixed(2)}` 
                             : '—'}
                         </div>
                       </TableCell>
@@ -168,7 +168,7 @@ export default function PurchaseOrder() {
                             "font-mono font-semibold",
                             margin !== null && margin >= 0 ? "text-chart-3" : "text-destructive"
                           )}>
-                            {margin !== null ? `₹${margin.toFixed(2)}` : '—'}
+                            {margin !== null ? `₹${margin === 0 ? '0' : margin.toFixed(2)}` : '—'}
                           </span>
                         </TableCell>
                       )}
