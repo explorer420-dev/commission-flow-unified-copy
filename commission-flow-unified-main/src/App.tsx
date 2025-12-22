@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import SaleOrder from "./pages/SaleOrder";
 import PurchaseOrder from "./pages/PurchaseOrder";
-import PurchaseOrderNew from "./pages/PurchaseOrderNew";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,7 +21,7 @@ const App = () => (
           <Route path="/" element={<Dashboard />} />
           <Route path="/sale-order" element={<SaleOrder />} />
           <Route path="/purchase-order" element={<PurchaseOrder />} />
-          <Route path="/purchase-order-new" element={<PurchaseOrderNew />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
