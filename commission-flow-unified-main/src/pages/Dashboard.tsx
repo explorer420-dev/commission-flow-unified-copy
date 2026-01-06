@@ -57,13 +57,13 @@ export default function Dashboard() {
   const soStatus = getModuleStatus('so')!;
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8 font-sans">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-screen bg-slate-50 p-4 font-sans">
+      <div className="max-w-6xl mx-auto space-y-5">
 
         {/* Header */}
         <header className="flex items-center justify-between pb-6 border-b border-slate-200">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900 mb-1">
+            <h1 className="text-2xl font-bold text-slate-900 mb-1">
               Commission Trade Pricing
             </h1>
             <p className="text-slate-500">
@@ -77,22 +77,22 @@ export default function Dashboard() {
         </header>
 
         {/* Modules Grid - Interactive */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-4">
           {/* PO Module Card */}
           <Link to="/purchase-order" className="block group">
-            <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-8 h-full transition-all duration-300 hover:shadow-lg hover:border-blue-200">
-              <div className="flex justify-between items-start mb-6">
-                <div className="p-3 bg-blue-100 rounded-lg text-blue-600">
-                  <Package className="h-8 w-8" />
+            <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-5 h-full transition-all duration-300 hover:shadow-lg hover:border-blue-200">
+              <div className="flex justify-between items-start mb-4">
+                <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
+                  <Package className="h-6 w-6" />
                 </div>
-                <ArrowRight className="h-6 w-6 text-blue-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+                <ArrowRight className="h-5 w-5 text-blue-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
               </div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">Purchase Order Module</h2>
-              <p className="text-slate-500 mb-8">Manage Expected and Actual Purchase Prices with Patty calculations</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Purchase Order Module</h2>
+              <p className="text-slate-500 text-sm mb-4">Manage Expected and Actual Purchase Prices with Patty calculations</p>
 
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-slate-400">Status:</span>
-                <span className={cn("px-3 py-1 rounded-md text-sm font-semibold", poStatus.class)}>
+                <span className="text-xs font-medium text-slate-400">Status:</span>
+                <span className={cn("px-2 py-0.5 rounded-md text-xs font-semibold", poStatus.class)}>
                   {poStatus.label}
                 </span>
               </div>
@@ -101,19 +101,19 @@ export default function Dashboard() {
 
           {/* SO Module Card */}
           <Link to="/sale-order" className="block group">
-            <div className="bg-emerald-50/50 border border-emerald-100 rounded-xl p-8 h-full transition-all duration-300 hover:shadow-lg hover:border-emerald-200">
-              <div className="flex justify-between items-start mb-6">
-                <div className="p-3 bg-emerald-100 rounded-lg text-emerald-600">
-                  <ShoppingCart className="h-8 w-8" />
+            <div className="bg-emerald-50/50 border border-emerald-100 rounded-xl p-5 h-full transition-all duration-300 hover:shadow-lg hover:border-emerald-200">
+              <div className="flex justify-between items-start mb-4">
+                <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600">
+                  <ShoppingCart className="h-6 w-6" />
                 </div>
-                <ArrowRight className="h-6 w-6 text-emerald-300 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
+                <ArrowRight className="h-5 w-5 text-emerald-300 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
               </div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">Sale Order Module</h2>
-              <p className="text-slate-500 mb-8">Enter Expected and Actual Selling Prices for SKU items</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Sale Order Module</h2>
+              <p className="text-slate-500 text-sm mb-4">Enter Expected and Actual Selling Prices for SKU items</p>
 
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-slate-400">Status:</span>
-                <span className={cn("px-3 py-1 rounded-md text-sm font-semibold", soStatus.class)}>
+                <span className="text-xs font-medium text-slate-400">Status:</span>
+                <span className={cn("px-2 py-0.5 rounded-md text-xs font-semibold", soStatus.class)}>
                   {soStatus.label}
                 </span>
               </div>
@@ -123,10 +123,10 @@ export default function Dashboard() {
 
         {/* Workflow Overview - Read Only */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-          <div className="p-6 border-b border-slate-100 flex justify-between items-center">
+          <div className="p-4 border-b border-slate-100 flex justify-between items-center">
             <div>
-              <h3 className="text-lg font-bold text-slate-900">Workflow Overview</h3>
-              <p className="text-sm text-slate-500">Unified pricing lifecycle tracking</p>
+              <h3 className="text-base font-bold text-slate-900">Workflow Overview</h3>
+              <p className="text-xs text-slate-500">Unified pricing lifecycle tracking</p>
             </div>
             <div className="flex gap-4 text-xs font-medium">
               <div className="flex items-center gap-2">
@@ -140,7 +140,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="p-6 space-y-6">
+          <div className="p-5 space-y-5">
 
             {/* Step 1 */}
             <WorkflowStep
@@ -153,7 +153,7 @@ export default function Dashboard() {
 
             {/* Step 2 - SO Dependency */}
             <div className={cn(
-              "relative rounded-xl border-2 p-6 transition-all",
+              "relative rounded-xl border-2 p-4 transition-all",
               // Always show emerald theme, just slightly different intensity or border for active vs locked
               getStepStatus(2) === 'active'
                 ? "border-emerald-500 bg-emerald-50"
@@ -173,10 +173,10 @@ export default function Dashboard() {
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="font-semibold text-lg text-emerald-900">
+                      <h4 className="font-semibold text-base text-emerald-900">
                         Sale Order Completion Required
                       </h4>
-                      <p className="text-emerald-700/80 text-sm mt-1">
+                      <p className="text-emerald-700/80 text-xs mt-1">
                         Workflow halts here. Complete E-SP and A-SP in the Sale Order Module to unlock final calculations.
                       </p>
                     </div>
@@ -265,21 +265,21 @@ function WorkflowStep({
       )}
 
       <div className={cn(
-        "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold border-2 transition-colors z-10",
+        "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-base font-bold border-2 transition-colors z-10",
         status === 'active' ? activeColor :
           status === 'completed' ? completedColor :
             lockedColor
       )}>
-        {status === 'completed' ? <Check className="h-6 w-6" /> : number}
+        {status === 'completed' ? <Check className="h-5 w-5" /> : number}
       </div>
 
       <div className="flex-1 py-1">
         <div className="flex justify-between items-start">
           <div>
-            <h4 className={cn("font-semibold text-lg", titleColor)}>
+            <h4 className={cn("font-semibold text-base", titleColor)}>
               {title}
             </h4>
-            <p className={cn("text-sm mt-1", descColor)}>{description}</p>
+            <p className={cn("text-xs mt-1", descColor)}>{description}</p>
           </div>
 
           <div className="min-w-[80px] flex justify-end">

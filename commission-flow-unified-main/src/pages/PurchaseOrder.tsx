@@ -162,13 +162,13 @@ export default function PurchaseOrder() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen bg-blue-50 p-8">
       <div className="max-w-7xl mx-auto">
         <Breadcrumbs items={[{ label: 'PO Module' }]} />
 
         <header className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground">Purchase Order Module</h1>
-          <p className="text-muted-foreground">Manage Expected and Actual Purchase Prices with Patty calculations</p>
+          <h1 className="text-2xl font-bold text-blue-900">Purchase Order Module</h1>
+          <p className="text-blue-700/80">Manage Expected and Actual Purchase Prices with Patty calculations</p>
         </header>
 
         {getBanner()}
@@ -191,7 +191,7 @@ export default function PurchaseOrder() {
                   A-PP = [A-SP – (Labour ₹{labourCost} + Transport ₹{transportCost})] – NC {(commissionRate * 100).toFixed(0)}% commission
                 </p>
               </div>
-              <Button onClick={handleGeneratePatty} className="gap-2">
+              <Button onClick={handleGeneratePatty} className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
                 <Calculator className="h-4 w-4" />
                 Generate Tentative Seller Patty Price
               </Button>
@@ -199,7 +199,7 @@ export default function PurchaseOrder() {
           </div>
         )}
 
-        <Card>
+        <Card className="border-blue-100 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between flex-wrap gap-4">
             <CardTitle>Purchase Pricing Table</CardTitle>
             <div className="flex gap-4 flex-wrap">
@@ -223,9 +223,9 @@ export default function PurchaseOrder() {
                 <TableRow className="bg-muted/30">
                   <TableHead className="font-semibold">SKU Name</TableHead>
                   <TableHead className="font-semibold text-right">Qty</TableHead>
-                  <TableHead className="font-semibold text-right">Expected Purchase Price (E-PP)</TableHead>
-                  <TableHead className="font-semibold text-right">Tentative Seller Patty (A-PP)</TableHead>
-                  <TableHead className="font-semibold text-right">Actual Seller Patty Price</TableHead>
+                  <TableHead className="font-semibold text-center">Expected Purchase Price (E-PP)</TableHead>
+                  <TableHead className="font-semibold text-center">Tentative Seller Patty (A-PP)</TableHead>
+                  <TableHead className="font-semibold text-center">Actual Seller Patty Price</TableHead>
                   {(poStage === 'enter-actual-patty' || poStage === 'completed') && (
                     <TableHead className="font-semibold text-right">Margin</TableHead>
                   )}
@@ -247,7 +247,7 @@ export default function PurchaseOrder() {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className={cn(
-                          "font-mono p-2 text-right",
+                          "font-mono p-2 text-center w-1/2 mx-auto",
                           poStage === 'enter-epp' || poStage === 'awaiting-so' || poStage === 'generate-app'
                             ? "bg-muted/30 text-muted"
                             : "bg-primary/5"
@@ -282,7 +282,7 @@ export default function PurchaseOrder() {
 
             <div className="mt-6 flex justify-end gap-4">
               {poStage === 'enter-epp' && (
-                <Button onClick={handleSubmitEPP} className="gap-2">
+                <Button onClick={handleSubmitEPP} className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
                   <Send className="h-4 w-4" />
                   Submit Expected Purchase Prices
                 </Button>
@@ -293,7 +293,7 @@ export default function PurchaseOrder() {
                 </Button>
               )}
               {poStage === 'enter-actual-patty' && (
-                <Button onClick={handleConfirmFinalPatty} className="gap-2">
+                <Button onClick={handleConfirmFinalPatty} className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
                   <CheckCircle className="h-4 w-4" />
                   Confirm Final Patty Prices
                 </Button>

@@ -47,18 +47,18 @@ export default function SaleOrder() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen bg-emerald-50 p-8">
       <div className="max-w-6xl mx-auto">
         <Breadcrumbs items={[{ label: 'SO Module' }]} />
 
         <header className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground">Sale Order Module</h1>
-          <p className="text-muted-foreground">Manage Expected and Actual Selling Prices</p>
+          <h1 className="text-2xl font-bold text-emerald-900">Sale Order Module</h1>
+          <p className="text-emerald-700/80">Manage Expected and Actual Selling Prices</p>
         </header>
 
         {getBanner()}
 
-        <Card>
+        <Card className="border-emerald-100 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>SKU Pricing Table</CardTitle>
             <div className="flex gap-4">
@@ -77,9 +77,9 @@ export default function SaleOrder() {
               <TableHeader>
                 <TableRow className="bg-muted/30">
                   <TableHead className="font-semibold">SKU Name</TableHead>
-                  <TableHead className="font-semibold text-right">Quantity</TableHead>
-                  <TableHead className="font-semibold text-right">Expected Selling Price (E-SP)</TableHead>
-                  <TableHead className="font-semibold text-right">Actual Selling Price (A-SP)</TableHead>
+                  <TableHead className="font-semibold text-center">Quantity</TableHead>
+                  <TableHead className="font-semibold text-center">Expected Selling Price (E-SP)</TableHead>
+                  <TableHead className="font-semibold text-center">Actual Selling Price (A-SP)</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

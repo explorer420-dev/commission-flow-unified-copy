@@ -43,11 +43,11 @@ interface AppState {
 }
 
 export const initialItems: SKUItem[] = [
-  { id: '1', skuName: 'Basmati Rice 25kg', quantity: 100, expectedSellingPrice: null, actualSellingPrice: null, expectedPurchasePrice: null, tentativePattyPrice: null, actualPattyPrice: null },
-  { id: '2', skuName: 'Wheat Flour 50kg', quantity: 200, expectedSellingPrice: null, actualSellingPrice: null, expectedPurchasePrice: null, tentativePattyPrice: null, actualPattyPrice: null },
-  { id: '3', skuName: 'Sunflower Oil 15L', quantity: 50, expectedSellingPrice: null, actualSellingPrice: null, expectedPurchasePrice: null, tentativePattyPrice: null, actualPattyPrice: null },
-  { id: '4', skuName: 'Sugar Refined 25kg', quantity: 150, expectedSellingPrice: null, actualSellingPrice: null, expectedPurchasePrice: null, tentativePattyPrice: null, actualPattyPrice: null },
-  { id: '5', skuName: 'Dal Moong 10kg', quantity: 80, expectedSellingPrice: null, actualSellingPrice: null, expectedPurchasePrice: null, tentativePattyPrice: null, actualPattyPrice: null },
+  { id: '1', skuName: 'Blueberry', quantity: 100, expectedSellingPrice: null, actualSellingPrice: null, expectedPurchasePrice: null, tentativePattyPrice: null, actualPattyPrice: null },
+  { id: '2', skuName: 'Avocado (16C)', quantity: 200, expectedSellingPrice: null, actualSellingPrice: null, expectedPurchasePrice: null, tentativePattyPrice: null, actualPattyPrice: null },
+  { id: '3', skuName: 'Avocado (20C)', quantity: 50, expectedSellingPrice: null, actualSellingPrice: null, expectedPurchasePrice: null, tentativePattyPrice: null, actualPattyPrice: null },
+  { id: '4', skuName: 'Apple - Royal Gala', quantity: 150, expectedSellingPrice: null, actualSellingPrice: null, expectedPurchasePrice: null, tentativePattyPrice: null, actualPattyPrice: null },
+  { id: '5', skuName: 'Apple - Red Delicious', quantity: 80, expectedSellingPrice: null, actualSellingPrice: null, expectedPurchasePrice: null, tentativePattyPrice: null, actualPattyPrice: null },
 ];
 
 export const useAppStore = create<AppState>((set, get) => ({
