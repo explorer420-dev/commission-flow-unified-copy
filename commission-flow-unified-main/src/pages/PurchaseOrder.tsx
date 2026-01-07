@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { UnsolvedSKU, FallbackEntry } from '@/lib/types';
 import { UnsolvedSKUsPanel } from '@/components/UnsolvedSKUsPanel';
 import { FallbackPricingModal } from '@/components/FallbackPricingModal';
+import { WorkflowGuide } from '@/components/WorkflowGuide';
 
 export default function PurchaseOrder() {
   const navigate = useNavigate();
@@ -162,151 +163,164 @@ export default function PurchaseOrder() {
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        <Breadcrumbs items={[{ label: 'PO Module' }]} />
+    <div className="min-h-screen bg-blue-50 p-4 lg:p-8">
+      <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
 
-        <header className="mb-6">
-          <h1 className="text-2xl font-bold text-blue-900">Purchase Order Module</h1>
-          <p className="text-blue-700/80">Manage Expected and Actual Purchase Prices with Patty calculations</p>
-        </header>
+        {/* Main Content */}
+        <div className="lg:col-span-3 space-y-6">
+          <div className="space-y-6">
+            <Breadcrumbs items={[{ label: 'PO Module' }]} />
 
-        {getBanner()}
+            <header className="mb-6">
+              <h1 className="text-2xl font-bold text-blue-900">Purchase Order Module</h1>
+              <p className="text-blue-700/80">Manage Expected and Actual Purchase Prices with Patty calculations</p>
+            </header>
 
-        {/* Unsolved SKUs Warning Panel */}
-        {unsolvedSKUs.length > 0 && (
-          <UnsolvedSKUsPanel
-            unsolvedSKUs={unsolvedSKUs}
-            onOpenFallbackModal={() => setIsFallbackModalOpen(true)}
-            onCreateSO={handleCreateSO}
-          />
-        )}
+            {getBanner()}
 
-        {poStage === 'generate-app' && !unsolvedSKUs.length && (
-          <div className="mb-6 p-4 bg-primary/5 border border-primary/20">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold text-foreground">Calculation Formula</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  A-PP = [A-SP – (Labour ₹{labourCost} + Transport ₹{transportCost})] – NC {(commissionRate * 100).toFixed(0)}% commission
-                </p>
+            {/* Unsolved SKUs Warning Panel */}
+            {unsolvedSKUs.length > 0 && (
+              <UnsolvedSKUsPanel
+                unsolvedSKUs={unsolvedSKUs}
+                onOpenFallbackModal={() => setIsFallbackModalOpen(true)}
+                onCreateSO={handleCreateSO}
+              />
+            )}
+
+            {poStage === 'generate-app' && !unsolvedSKUs.length && (
+              <div className="mb-6 p-4 bg-primary/5 border border-primary/20">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold text-foreground">Calculation Formula</h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      A-PP = [A-SP – (Labour ₹{labourCost} + Transport ₹{transportCost})] – NC {(commissionRate * 100).toFixed(0)}% commission
+                    </p>
+                  </div>
+                  <Button onClick={handleGeneratePatty} className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
+                    <Calculator className="h-4 w-4" />
+                    Generate Tentative Seller Patty Price
+                  </Button>
+                </div>
               </div>
-              <Button onClick={handleGeneratePatty} className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
-                <Calculator className="h-4 w-4" />
-                Generate Tentative Seller Patty Price
-              </Button>
-            </div>
-          </div>
-        )}
+            )}
 
-        <Card className="border-blue-100 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between flex-wrap gap-4">
-            <CardTitle>Purchase Pricing Table</CardTitle>
-            <div className="flex gap-4 flex-wrap">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">E-PP:</span>
-                <StatusBadge status={poStage === 'enter-epp' ? 'editable' : poStage === 'completed' ? 'completed' : 'locked'} />
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">A-PP:</span>
-                <StatusBadge status={poStage === 'enter-actual-patty' || poStage === 'completed' ? 'completed' : 'locked'} />
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Actual Patty:</span>
-                <StatusBadge status={poStage === 'enter-actual-patty' ? 'editable' : poStage === 'completed' ? 'completed' : 'locked'} />
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/30">
-                  <TableHead className="font-semibold">SKU Name</TableHead>
-                  <TableHead className="font-semibold text-right">Qty</TableHead>
-                  <TableHead className="font-semibold text-center">Expected Purchase Price (E-PP)</TableHead>
-                  <TableHead className="font-semibold text-center">Tentative Seller Patty (A-PP)</TableHead>
-                  <TableHead className="font-semibold text-center">Actual Seller Patty Price</TableHead>
-                  {(poStage === 'enter-actual-patty' || poStage === 'completed') && (
-                    <TableHead className="font-semibold text-right">Margin</TableHead>
-                  )}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {skuItems.map((item) => {
-                  const margin = getMargin(item);
-                  return (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.skuName}</TableCell>
-                      <TableCell className="text-right font-mono">{item.quantity}</TableCell>
-                      <TableCell className="text-right">
-                        <PriceInput
-                          value={item.expectedPurchasePrice}
-                          onChange={(value) => updateEPP(item.id, value)}
-                          disabled={poStage !== 'enter-epp'}
-                        />
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className={cn(
-                          "font-mono p-2 text-center w-1/2 mx-auto",
-                          poStage === 'enter-epp' || poStage === 'awaiting-so' || poStage === 'generate-app'
-                            ? "bg-muted/30 text-muted"
-                            : "bg-primary/5"
-                        )}>
-                          {item.tentativePattyPrice !== null
-                            ? `₹${item.tentativePattyPrice === 0 ? '0' : item.tentativePattyPrice.toFixed(2)}`
-                            : '—'}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <PriceInput
-                          value={item.actualPattyPrice}
-                          onChange={(value) => updateActualPatty(item.id, value)}
-                          disabled={poStage !== 'enter-actual-patty'}
-                        />
-                      </TableCell>
+            <Card className="border-blue-100 shadow-sm">
+              <CardHeader className="flex flex-row items-center justify-between flex-wrap gap-4">
+                <CardTitle>Purchase Pricing Table</CardTitle>
+                <div className="flex gap-4 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">E-PP:</span>
+                    <StatusBadge status={poStage === 'enter-epp' ? 'editable' : poStage === 'completed' ? 'completed' : 'locked'} />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">A-PP:</span>
+                    <StatusBadge status={poStage === 'enter-actual-patty' || poStage === 'completed' ? 'completed' : 'locked'} />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">Actual Patty:</span>
+                    <StatusBadge status={poStage === 'enter-actual-patty' ? 'editable' : poStage === 'completed' ? 'completed' : 'locked'} />
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-muted/30">
+                      <TableHead className="font-semibold">SKU Name</TableHead>
+                      <TableHead className="font-semibold text-right">Qty</TableHead>
+                      <TableHead className="font-semibold text-center">Expected Purchase Price (E-PP)</TableHead>
+                      <TableHead className="font-semibold text-center">Tentative Seller Patty (A-PP)</TableHead>
+                      <TableHead className="font-semibold text-center">Actual Seller Patty Price</TableHead>
                       {(poStage === 'enter-actual-patty' || poStage === 'completed') && (
-                        <TableCell className="text-right">
-                          <span className={cn(
-                            "font-mono font-semibold",
-                            margin !== null && margin >= 0 ? "text-chart-3" : "text-destructive"
-                          )}>
-                            {margin !== null ? `₹${margin === 0 ? '0' : margin.toFixed(2)}` : '—'}
-                          </span>
-                        </TableCell>
+                        <TableHead className="font-semibold text-right">Margin</TableHead>
                       )}
                     </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {skuItems.map((item) => {
+                      const margin = getMargin(item);
+                      return (
+                        <TableRow key={item.id}>
+                          <TableCell className="font-medium">{item.skuName}</TableCell>
+                          <TableCell className="text-right font-mono">{item.quantity}</TableCell>
+                          <TableCell className="text-right">
+                            <PriceInput
+                              value={item.expectedPurchasePrice}
+                              onChange={(value) => updateEPP(item.id, value)}
+                              disabled={poStage !== 'enter-epp'}
+                            />
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className={cn(
+                              "font-mono p-2 text-center w-1/2 mx-auto",
+                              poStage === 'enter-epp' || poStage === 'awaiting-so' || poStage === 'generate-app'
+                                ? "bg-muted/30 text-muted"
+                                : "bg-primary/5"
+                            )}>
+                              {item.tentativePattyPrice !== null
+                                ? `₹${item.tentativePattyPrice === 0 ? '0' : item.tentativePattyPrice.toFixed(2)}`
+                                : '—'}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <PriceInput
+                              value={item.actualPattyPrice}
+                              onChange={(value) => updateActualPatty(item.id, value)}
+                              disabled={poStage !== 'enter-actual-patty'}
+                            />
+                          </TableCell>
+                          {(poStage === 'enter-actual-patty' || poStage === 'completed') && (
+                            <TableCell className="text-right">
+                              <span className={cn(
+                                "font-mono font-semibold",
+                                margin !== null && margin >= 0 ? "text-chart-3" : "text-destructive"
+                              )}>
+                                {margin !== null ? `₹${margin === 0 ? '0' : margin.toFixed(2)}` : '—'}
+                              </span>
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
 
-            <div className="mt-6 flex justify-end gap-4">
-              {poStage === 'enter-epp' && (
-                <Button onClick={handleSubmitEPP} className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
-                  <Send className="h-4 w-4" />
-                  Submit Expected Purchase Prices
-                </Button>
-              )}
-              {poStage === 'awaiting-so' && (
-                <Button onClick={() => navigate('/sale-order')} variant="outline" className="gap-2">
-                  Complete Sale Order First
-                </Button>
-              )}
-              {poStage === 'enter-actual-patty' && (
-                <Button onClick={handleConfirmFinalPatty} className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
-                  <CheckCircle className="h-4 w-4" />
-                  Confirm Final Patty Prices
-                </Button>
-              )}
-              {poStage === 'completed' && (
-                <Button onClick={() => navigate('/')} variant="secondary" className="gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  Return to Dashboard
-                </Button>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+                <div className="mt-6 flex justify-end gap-4">
+                  {poStage === 'enter-epp' && (
+                    <Button onClick={handleSubmitEPP} className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
+                      <Send className="h-4 w-4" />
+                      Submit Expected Purchase Prices
+                    </Button>
+                  )}
+                  {poStage === 'awaiting-so' && (
+                    <Button onClick={() => navigate('/sale-order')} variant="outline" className="gap-2">
+                      Complete Sale Order First
+                    </Button>
+                  )}
+                  {poStage === 'enter-actual-patty' && (
+                    <Button onClick={handleConfirmFinalPatty} className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
+                      <CheckCircle className="h-4 w-4" />
+                      Confirm Final Patty Prices
+                    </Button>
+                  )}
+                  {poStage === 'completed' && (
+                    <Button onClick={() => navigate('/')} variant="secondary" className="gap-2">
+                      <CheckCircle className="h-4 w-4" />
+                      Return to Dashboard
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Workflow Guide Sidebar */}
+        <div className="space-y-6">
+          <div className="sticky top-6">
+            <WorkflowGuide />
+          </div>
+        </div>
       </div>
 
       {/* Fallback Pricing Modal */}

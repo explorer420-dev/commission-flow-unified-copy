@@ -3,6 +3,7 @@ import { ShoppingCart, Package, ArrowRight, RotateCcw, Check, Lock, Clock } from
 import { Button } from '@/components/ui/button';
 import { useAppStore, POStage, SOStage } from '@/lib/store';
 import { cn } from '@/lib/utils';
+import { WorkflowGuide } from '@/components/WorkflowGuide';
 
 export default function Dashboard() {
   const { soStage, poStage, resetAll } = useAppStore();
@@ -58,7 +59,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 font-sans">
-      <div className="max-w-6xl mx-auto space-y-5">
+      <div className="max-w-7xl mx-auto space-y-6">
 
         {/* Header */}
         <header className="flex items-center justify-between pb-6 border-b border-slate-200">
@@ -76,152 +77,158 @@ export default function Dashboard() {
           </Button>
         </header>
 
-        {/* Modules Grid - Interactive */}
-        <div className="grid md:grid-cols-2 gap-4">
-          {/* PO Module Card */}
-          <Link to="/purchase-order" className="block group">
-            <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-5 h-full transition-all duration-300 hover:shadow-lg hover:border-blue-200">
-              <div className="flex justify-between items-start mb-4">
-                <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
-                  <Package className="h-6 w-6" />
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Main Content Area */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Modules Grid - Interactive */}
+            <div className="grid md:grid-cols-2 gap-4">
+              {/* PO Module Card */}
+              <Link to="/purchase-order" className="block group">
+                <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-5 h-full transition-all duration-300 hover:shadow-lg hover:border-blue-200">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
+                      <Package className="h-6 w-6" />
+                    </div>
+                    <ArrowRight className="h-5 w-5 text-blue-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h2 className="text-lg font-bold text-slate-900 mb-1">Purchase Order Module</h2>
+                  <p className="text-slate-500 text-sm mb-4">Manage Expected and Actual Purchase Prices with Patty calculations</p>
+
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-slate-400">Status:</span>
+                    <span className={cn("px-2 py-0.5 rounded-md text-xs font-semibold", poStatus.class)}>
+                      {poStatus.label}
+                    </span>
+                  </div>
                 </div>
-                <ArrowRight className="h-5 w-5 text-blue-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
-              </div>
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Purchase Order Module</h2>
-              <p className="text-slate-500 text-sm mb-4">Manage Expected and Actual Purchase Prices with Patty calculations</p>
+              </Link>
 
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-slate-400">Status:</span>
-                <span className={cn("px-2 py-0.5 rounded-md text-xs font-semibold", poStatus.class)}>
-                  {poStatus.label}
-                </span>
-              </div>
-            </div>
-          </Link>
+              {/* SO Module Card */}
+              <Link to="/sale-order" className="block group">
+                <div className="bg-emerald-50/50 border border-emerald-100 rounded-xl p-5 h-full transition-all duration-300 hover:shadow-lg hover:border-emerald-200">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600">
+                      <ShoppingCart className="h-6 w-6" />
+                    </div>
+                    <ArrowRight className="h-5 w-5 text-emerald-300 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h2 className="text-lg font-bold text-slate-900 mb-1">Sale Order Module</h2>
+                  <p className="text-slate-500 text-sm mb-4">Enter Expected and Actual Selling Prices for SKU items</p>
 
-          {/* SO Module Card */}
-          <Link to="/sale-order" className="block group">
-            <div className="bg-emerald-50/50 border border-emerald-100 rounded-xl p-5 h-full transition-all duration-300 hover:shadow-lg hover:border-emerald-200">
-              <div className="flex justify-between items-start mb-4">
-                <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600">
-                  <ShoppingCart className="h-6 w-6" />
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-slate-400">Status:</span>
+                    <span className={cn("px-2 py-0.5 rounded-md text-xs font-semibold", soStatus.class)}>
+                      {soStatus.label}
+                    </span>
+                  </div>
                 </div>
-                <ArrowRight className="h-5 w-5 text-emerald-300 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
-              </div>
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Sale Order Module</h2>
-              <p className="text-slate-500 text-sm mb-4">Enter Expected and Actual Selling Prices for SKU items</p>
-
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-slate-400">Status:</span>
-                <span className={cn("px-2 py-0.5 rounded-md text-xs font-semibold", soStatus.class)}>
-                  {soStatus.label}
-                </span>
-              </div>
+              </Link>
             </div>
-          </Link>
-        </div>
 
-        {/* Workflow Overview - Read Only */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-          <div className="p-4 border-b border-slate-100 flex justify-between items-center">
-            <div>
-              <h3 className="text-base font-bold text-slate-900">Workflow Overview</h3>
-              <p className="text-xs text-slate-500">Unified pricing lifecycle tracking</p>
-            </div>
-            <div className="flex gap-4 text-xs font-medium">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                Purchase Order Flow
+            {/* Workflow Overview - Read Only */}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <div className="p-4 border-b border-slate-100 flex justify-between items-center">
+                <div>
+                  <h3 className="text-base font-bold text-slate-900">Workflow Overview</h3>
+                  <p className="text-xs text-slate-500">Unified pricing lifecycle tracking</p>
+                </div>
+                <div className="flex gap-4 text-xs font-medium">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                    Purchase Order Flow
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    Sale Order Dependency
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                Sale Order Dependency
+
+              <div className="p-5 space-y-5">
+                {/* Step 1 */}
+                <WorkflowStep
+                  number={1}
+                  title="Enter Expected Purchase Prices (E-PP)"
+                  description="Initial data entry for PO items"
+                  status={getStepStatus(1)}
+                  type="po"
+                />
+
+                {/* Step 2 - SO Dependency */}
+                <div className={cn(
+                  "relative rounded-xl border-2 p-4 transition-all",
+                  getStepStatus(2) === 'active'
+                    ? "border-emerald-500 bg-emerald-50"
+                    : "border-emerald-200 bg-emerald-50/30"
+                )}>
+                  {/* Connector Line */}
+                  <div className="absolute -top-6 left-8 w-0.5 h-6 bg-slate-200"></div>
+
+                  <div className="flex items-start gap-4">
+                    <div className={cn(
+                      "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 bg-white",
+                      "border-emerald-500 text-emerald-600"
+                    )}>
+                      <ShoppingCart className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-semibold text-base text-emerald-900">
+                            Sale Order Completion Required
+                          </h4>
+                          <p className="text-emerald-700/80 text-xs mt-1">
+                            Workflow halts here. Complete E-SP and A-SP in the Sale Order Module to unlock final calculations.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Sub-steps pills */}
+                      <div className="flex gap-2 mt-4">
+                        <span className={cn(
+                          "px-3 py-1 text-xs font-medium rounded-full border flex items-center gap-1.5",
+                          soStage !== 'enter-esp' ? "bg-emerald-100 text-emerald-700 border-emerald-200" : "bg-white text-emerald-600 border-emerald-200"
+                        )}>
+                          <span className={cn("w-1.5 h-1.5 rounded-full", soStage !== 'enter-esp' ? "bg-emerald-500" : "bg-emerald-200")}></span>
+                          Enter E-SP
+                        </span>
+                        <span className={cn(
+                          "px-3 py-1 text-xs font-medium rounded-full border flex items-center gap-1.5",
+                          soStage === 'completed' ? "bg-emerald-100 text-emerald-700 border-emerald-200" : "bg-white text-emerald-600 border-emerald-200"
+                        )}>
+                          <span className={cn("w-1.5 h-1.5 rounded-full", soStage === 'completed' ? "bg-emerald-500" : "bg-emerald-200")}></span>
+                          Enter A-SP
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step 3 */}
+                <WorkflowStep
+                  number={3}
+                  title="Generate Tentative Patty Prices (A-PP)"
+                  description="Calculated from completed Sale Order data"
+                  status={getStepStatus(3)}
+                  type="po"
+                />
+
+                {/* Step 4 */}
+                <WorkflowStep
+                  number={4}
+                  title="Confirm Final Patty Prices"
+                  description="Final review and submission"
+                  status={getStepStatus(4)}
+                  type="po"
+                  isLast
+                />
               </div>
             </div>
           </div>
 
-          <div className="p-5 space-y-5">
-
-            {/* Step 1 */}
-            <WorkflowStep
-              number={1}
-              title="Enter Expected Purchase Prices (E-PP)"
-              description="Initial data entry for PO items"
-              status={getStepStatus(1)}
-              type="po"
-            />
-
-            {/* Step 2 - SO Dependency */}
-            <div className={cn(
-              "relative rounded-xl border-2 p-4 transition-all",
-              // Always show emerald theme, just slightly different intensity or border for active vs locked
-              getStepStatus(2) === 'active'
-                ? "border-emerald-500 bg-emerald-50"
-                : "border-emerald-200 bg-emerald-50/30"
-            )}>
-              {/* Connector Line */}
-              <div className="absolute -top-6 left-8 w-0.5 h-6 bg-slate-200"></div>
-
-              <div className="flex items-start gap-4">
-                <div className={cn(
-                  "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 bg-white",
-                  // Always emerald colors
-                  "border-emerald-500 text-emerald-600"
-                )}>
-                  <ShoppingCart className="h-5 w-5" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-semibold text-base text-emerald-900">
-                        Sale Order Completion Required
-                      </h4>
-                      <p className="text-emerald-700/80 text-xs mt-1">
-                        Workflow halts here. Complete E-SP and A-SP in the Sale Order Module to unlock final calculations.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Sub-steps pills */}
-                  <div className="flex gap-2 mt-4">
-                    <span className={cn(
-                      "px-3 py-1 text-xs font-medium rounded-full border flex items-center gap-1.5",
-                      soStage !== 'enter-esp' ? "bg-emerald-100 text-emerald-700 border-emerald-200" : "bg-white text-emerald-600 border-emerald-200"
-                    )}>
-                      <span className={cn("w-1.5 h-1.5 rounded-full", soStage !== 'enter-esp' ? "bg-emerald-500" : "bg-emerald-200")}></span>
-                      Enter E-SP
-                    </span>
-                    <span className={cn(
-                      "px-3 py-1 text-xs font-medium rounded-full border flex items-center gap-1.5",
-                      soStage === 'completed' ? "bg-emerald-100 text-emerald-700 border-emerald-200" : "bg-white text-emerald-600 border-emerald-200"
-                    )}>
-                      <span className={cn("w-1.5 h-1.5 rounded-full", soStage === 'completed' ? "bg-emerald-500" : "bg-emerald-200")}></span>
-                      Enter A-SP
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <WorkflowStep
-              number={3}
-              title="Generate Tentative Patty Prices (A-PP)"
-              description="Calculated from completed Sale Order data"
-              status={getStepStatus(3)}
-              type="po"
-            />
-
-            {/* Step 4 */}
-            <WorkflowStep
-              number={4}
-              title="Confirm Final Patty Prices"
-              description="Final review and submission"
-              status={getStepStatus(4)}
-              type="po"
-              isLast
-            />
-
+          {/* Sidebar */}
+          <div className="space-y-6">
+            <WorkflowGuide />
           </div>
         </div>
       </div>

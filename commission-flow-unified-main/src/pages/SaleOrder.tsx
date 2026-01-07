@@ -10,6 +10,7 @@ import { useAppStore } from '@/lib/store';
 import { CheckCircle, Send } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { WorkflowGuide } from '@/components/WorkflowGuide';
 
 export default function SaleOrder() {
   const navigate = useNavigate();
@@ -47,93 +48,105 @@ export default function SaleOrder() {
   };
 
   return (
-    <div className="min-h-screen bg-emerald-50 p-8">
-      <div className="max-w-6xl mx-auto">
-        <Breadcrumbs items={[{ label: 'SO Module' }]} />
+    <div className="min-h-screen bg-emerald-50 p-4 lg:p-8">
+      <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
 
-        <header className="mb-6">
-          <h1 className="text-2xl font-bold text-emerald-900">Sale Order Module</h1>
-          <p className="text-emerald-700/80">Manage Expected and Actual Selling Prices</p>
-        </header>
+        {/* Main Content */}
+        <div className="lg:col-span-3 space-y-6">
+          <Breadcrumbs items={[{ label: 'SO Module' }]} />
 
-        {getBanner()}
+          <header className="mb-6">
+            <h1 className="text-2xl font-bold text-emerald-900">Sale Order Module</h1>
+            <p className="text-emerald-700/80">Manage Expected and Actual Selling Prices</p>
+          </header>
 
-        <Card className="border-emerald-100 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>SKU Pricing Table</CardTitle>
-            <div className="flex gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">E-SP Status:</span>
-                <StatusBadge status={soStage === 'enter-esp' ? 'editable' : soStage === 'completed' ? 'completed' : 'locked'} />
+          {getBanner()}
+
+          <Card className="border-emerald-100 shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>SKU Pricing Table</CardTitle>
+              <div className="flex gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">E-SP Status:</span>
+                  <StatusBadge status={soStage === 'enter-esp' ? 'editable' : soStage === 'completed' ? 'completed' : 'locked'} />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">A-SP Status:</span>
+                  <StatusBadge status={soStage === 'enter-asp' ? 'editable' : soStage === 'completed' ? 'completed' : 'locked'} />
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">A-SP Status:</span>
-                <StatusBadge status={soStage === 'enter-asp' ? 'editable' : soStage === 'completed' ? 'completed' : 'locked'} />
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/30">
-                  <TableHead className="font-semibold">SKU Name</TableHead>
-                  <TableHead className="font-semibold text-center">Quantity</TableHead>
-                  <TableHead className="font-semibold text-center">Expected Selling Price (E-SP)</TableHead>
-                  <TableHead className="font-semibold text-center">Actual Selling Price (A-SP)</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {skuItems.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="font-medium">{item.skuName}</TableCell>
-                    <TableCell className="text-right">
-                      <QuantityInput
-                        value={item.quantity}
-                        onChange={(value) => updateQuantity(item.id, value)}
-                        disabled={soStage === 'completed'}
-                      />
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <PriceInput
-                        value={item.expectedSellingPrice}
-                        onChange={(value) => updateESP(item.id, value)}
-                        disabled={soStage !== 'enter-esp'}
-                      />
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <PriceInput
-                        value={item.actualSellingPrice}
-                        onChange={(value) => updateASP(item.id, value)}
-                        disabled={soStage !== 'enter-asp'}
-                      />
-                    </TableCell>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/30">
+                    <TableHead className="font-semibold">SKU Name</TableHead>
+                    <TableHead className="font-semibold text-center">Quantity</TableHead>
+                    <TableHead className="font-semibold text-center">Expected Selling Price (E-SP)</TableHead>
+                    <TableHead className="font-semibold text-center">Actual Selling Price (A-SP)</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {skuItems.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell className="font-medium">{item.skuName}</TableCell>
+                      <TableCell className="text-right">
+                        <QuantityInput
+                          value={item.quantity}
+                          onChange={(value) => updateQuantity(item.id, value)}
+                          disabled={soStage === 'completed'}
+                        />
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <PriceInput
+                          value={item.expectedSellingPrice}
+                          onChange={(value) => updateESP(item.id, value)}
+                          disabled={soStage !== 'enter-esp'}
+                        />
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <PriceInput
+                          value={item.actualSellingPrice}
+                          onChange={(value) => updateASP(item.id, value)}
+                          disabled={soStage !== 'enter-asp'}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
 
-            <div className="mt-6 flex justify-end gap-4">
-              {soStage === 'enter-esp' && (
-                <Button onClick={handleSubmitESP} className="gap-2">
-                  <Send className="h-4 w-4" />
-                  Submit Expected SO
-                </Button>
-              )}
-              {soStage === 'enter-asp' && (
-                <Button onClick={handleSubmitASP} className="gap-2">
-                  <Send className="h-4 w-4" />
-                  Submit Actual SO
-                </Button>
-              )}
-              {soStage === 'completed' && (
-                <Button onClick={() => navigate('/purchase-order')} variant="secondary" className="gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  Proceed to Purchase Order
-                </Button>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+              <div className="mt-6 flex justify-end gap-4">
+                {soStage === 'enter-esp' && (
+                  <Button onClick={handleSubmitESP} className="gap-2">
+                    <Send className="h-4 w-4" />
+                    Submit Expected SO
+                  </Button>
+                )}
+                {soStage === 'enter-asp' && (
+                  <Button onClick={handleSubmitASP} className="gap-2">
+                    <Send className="h-4 w-4" />
+                    Submit Actual SO
+                  </Button>
+                )}
+                {soStage === 'completed' && (
+                  <Button onClick={() => navigate('/purchase-order')} variant="secondary" className="gap-2">
+                    <CheckCircle className="h-4 w-4" />
+                    Proceed to Purchase Order
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Workflow Guide Sidebar */}
+        <div className="space-y-6">
+          <div className="sticky top-6">
+            <WorkflowGuide />
+          </div>
+        </div>
+
       </div>
     </div>
   );
