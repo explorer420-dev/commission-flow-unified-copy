@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { UnsolvedSKU, FallbackEntry } from '@/lib/types';
 import { UnsolvedSKUsPanel } from '@/components/UnsolvedSKUsPanel';
 import { FallbackPricingModal } from '@/components/FallbackPricingModal';
+import { HorizontalWorkflowGuide } from '@/components/HorizontalWorkflowGuide';
 
 export default function PurchaseOrder() {
   const navigate = useNavigate();
@@ -346,6 +347,9 @@ export default function PurchaseOrder() {
             </button>
           </div>
         )}
+
+        {/* Workflow Guide Footer */}
+        <HorizontalWorkflowGuide />
       </div>
 
       {/* Keep existing Dialogs/Modals */}
